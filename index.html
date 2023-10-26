@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products-Zappy</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.15/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        .container-fluid {
+  padding: 0 15px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-5 {
+  margin-top: 3rem;
+}
+
+.mb-5 {
+  margin-bottom: 3rem;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.card {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  margin-left:250px;
+}
+
+.card-header {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: #f7f7f9;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-body {
+  flex: 1 1 auto;
+  padding: 1.25rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.col-md-4,
+.col-md-8 {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col-md-4 {
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+}
+
+
+.card1,
+.card2 {
+    width: 900px;
+  margin-bottom: 1.5rem;
+}
+
+.card2 {
+  height: 100%;
+}
+
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.btn {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+}
+
+.btn-warning {
+  color: #212529;
+  background-color: #ffc107;
+  border-color: #ffc107;
+}
+
+.btn-success {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.text-danger {
+  color: #dc3545;
+}
+.row1{
+   display: flex;
+}
+@media(max-width: 500px){
+	.table thead{
+		display: none;
+	}
+
+	.table, .table tr, .table td{
+		display: block;
+		
+	}
+	.table tr{
+		margin-bottom:15px;
+	}
+	.table td{
+		text-align: right;
+		padding-left: 450px;
+		text-align: right;
+		position: relative;
+	}
+	.table td::before{
+		content: attr(data-label);
+		position: absolute;
+		left:0;
+		width: 50%;
+		padding-left:15px;
+		font-size:15px;
+		font-weight: bold;
+		text-align: left;
+	}
+  .table tbody{
+    width: 800px;
+  }
+  .mt-3{
+    margin-left: -200px ;
+    
+  }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container-fluid mt-5 mb-5">
+        <h1 class="text-center text"><b class="cent">Add Your Products Here.</b></h1>
+        <div class="mt-3 mb-3">
+            <div class="row row1">
+                <div class="col-md-8">
+                    <div class="card card1">
+                        <div class="card-header"><b>Product List</b></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <% products.forEach(product => { %>
+                                <div class="col-lg-4 col-md-6 mb-4 text-center">
+                                    <img src="data:image/jpeg;base64,<%= product.images.data.toString('base64') %>"  style="width:100px;height:100px;" class="img-fluid">
+                                    <h4><b><%= product.name %></b></h4>
+                                    <h3 class="text-danger"><%= product.price %></h3>
+                                   
+                                    <form method="post" action="/add_cart">
+                                     
+                                        <input type="hidden" name="product_id" value="<%= product._id %>" />
+                                        <input type="hidden" name="product_name" value="<%= product.name %>" />
+                                        <input type="hidden" name="product_price" value="<%= product.price %>" />
+                                        <input type="submit" class="btn btn-warning" value="Add to Cart" />
+                                        <input type="hidden" name="cart" value="<%= JSON.stringify(cart) %>" /> 
+                                      
+                                    </form>
+                                </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card2">
+                        <div class="card-header"><b>Shopping Cart</b></div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table" id="table">
+                                  <div class="table1">
+                                    <thead>
+                                      <tr>
+                                        <th>Item Name</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Price</th>
+                                        <th>Total Price</th>
+                                        <th>Remove</th>
+                                        <input type="hidden" name="cart" value="<%= JSON.stringify(cart) %>" /> 
+                                    </tr>
+                                    </thead>
+                                  <% if(cart.length > 0) { 
+                                      let total = 0;
+                                      cart.forEach(item => { %>
+                                      <tbody>
+                                        <tr>
+                                          <td data-label="Item Name"><%= item.name %></td>
+                                          <td data-label="Quantity"><%= item.quantity %></td>
+                                          <td data-label="Unit Price"><%= item.price %></td>
+                                          <td data-label="Total Price"><%= parseFloat(item.quantity) * parseFloat(item.price) %></td>
+                                          <td data-label="Remove">
+                                              <form action="/remove_items/<%= item.product_id %>" method="get">
+                                                  <input type="hidden" name="cart" value="<%= JSON.stringify(cart) %>" />
+                                                  <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                              </form>
+                                          </td>
+                                      </tr>
+                                  </div>
+                                        <% total += parseFloat(item.quantity) * parseFloat(item.price);
+                                        }) %>
+                                        <tr>
+                                            <td colspan="3" align="right"><b>Total</b></td>
+                                            <td><%= total %></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="5" align="center">No Item Found in Cart</td>
+                                        </tr>
+                                    <% } %>
+                                  </tbody>
+                                </table>
+                            </div>
+                            <button onclick="generatePDF()" class="btn btn-success">Download PDF</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+    
+</body>
+</html>
+<script>
+    function generatePDF() {
+      const doc = new jsPDF();
+  
+      const table = document.getElementById("table");
+      const columnsToInclude = [0, 1, 2, 3]; // Indexes of the columns to include in the PDF
+  
+      
+      const data = [];
+  
+     
+      const headerData = [];
+      for (let i = 0; i < columnsToInclude.length; i++) {
+        const cell = table.rows[0].cells[columnsToInclude[i]];
+        headerData.push(cell ? cell.innerText : ""); 
+      }
+      data.push(headerData);
+  
+      
+      for (let i = 1; i < table.rows.length; i++) {
+        const rowData = [];
+        for (let j = 0; j < columnsToInclude.length; j++) {
+          const cell = table.rows[i].cells[columnsToInclude[j]];
+          rowData.push(cell ? cell.innerText : ""); 
+        }
+        data.push(rowData);
+      }
+  
+     
+      const columnWidths = [40, 30, 40, 40]; 
+  
+      doc.autoTable({
+        head: [data[0]],
+        body: data.slice(1),
+        startY: 20,
+        styles: { overflow: 'linebreak', columnWidth: 'wrap' },
+        columnStyles: {
+          0: { columnWidth: columnWidths[0] },
+          1: { columnWidth: columnWidths[1] },
+          2: { columnWidth: columnWidths[2] },
+          3: { columnWidth: columnWidths[3] }
+        }
+      });
+  
+      doc.save("table.pdf");
+    }
+  
+  
+    function remove_item(productId) {
+      event.preventDefault();
+  
+      if (confirm("Are you sure you want to remove it?")) {
+        
+        window.location.href = `/remove_items/${productId}?cart=${JSON.stringify(cart)}`;
+      }
+    }
+  
+  
+  
+  </script>
